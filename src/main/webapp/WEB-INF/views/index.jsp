@@ -15,6 +15,7 @@
  <p><button onclick="send_bbs()">게시판1(BBS)</button></p>
  <p><button onclick="send_board()">게시판2(Board)</button><p>
  <p><button onclick="send_shop()">쇼핑몰</button><p>
+ <p><button onclick="send_shop2()">쇼핑몰2</button><p>
 <script>
     function send_go(){
         location.href=`${pageContext.request.contextPath}/guestbook/luck`;
