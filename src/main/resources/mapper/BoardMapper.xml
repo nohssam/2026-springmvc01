@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.study.myproject01.board.mapper.BoardMapper">
+<!--    전체 게시물의 수 -->
+    <select id="getBoardCount" resultType="int">
+        select count(*) from board where active = 0
+    </select>
+<!--    리스트-->
+<!--    원글과 댓글 , 댓글, 댓글 모두 b_groups 가 같다.-->
+    <select id="getBoardList" parameterType="map" resultType="BoardVO">
+      select * from board  order by b_groups, b_lev asc limit #{limit} offset #{offset}
+    </select>
+
+<!--    원글 쓰기 -->
+<!--    원글을 삽입하면 두 개가 자동으로 증가해야 한다. (
+        b_idx는 auto_increment 이므로 자동 증가 된다.
+        b_groups 자동 증가 해야 되는데 auto_increment를 두개 사용할 수 없다.
+        원글
+        b_groups, b_step, b_lev => 1,0,0, || 2,0,0 || 3,0,0 ||
+        b_groups 를 자동 증가 시키는 방법 => selectKey
+        IFNULL(MAX(b_idx),0)+1 => b_idx의 최대값을 얻는다.
+        만약에 하나도 없는 0 이면 => 최후에 1를 더한다.
+        0이 아니면 최대값의 1을 더한다.
+-->
+<!-- insert문이 실행 되기 전에 b_groups를 현재 최대값에 1을 더해 넣어준다.       -->
+    <insert id="getBoardInsert" parameterType="BoardVO">
+        <selectKey keyProperty="b_groups" resultType="String" order="BEFORE">
+            select (IFNULL(MAX(b_idx),0) + 1) as b_groups from board
+        </selectKey>
+        insert into board(writer, title, content, pwd, hit, b_groups, b_step, b_lev,f_name)
+        values(#{writer}, #{title}, #{content}, #{pwd}, 0, #{b_groups}, 0, 0
+        <choose>
+            <when test="f_name != null">, #{f_name}</when>
+            <otherwise>, ''</otherwise>
+        </choose>
+        )
+    </insert>
+    <update id="getBoardHitUp" parameterType="BoardVO">
+        update board set hit = hit + 1 where b_idx = #{b_idx}
+    </update>
+    <select id="getBoardDetail" parameterType="BoardVO" resultType="BoardVO">
+        select * from board where b_idx = #{b_idx}
+    </select>
+<!--    첫번째 댓글들은  해당 사항이 없음-->
+<!--    xml 에서는 부등호를 사용하면 오류 발생  :<![CDATA[부등호]]> -->
+    <update id="getLevUp" parameterType="map">
+        update board set b_lev = b_lev + 1
+        <![CDATA[ where b_groups=#{b_groups} and b_lev >= #{b_lev}]]>
+    </update>
+<!--    댓글 삽입-->
+    <insert id="getBoardAnsInsert" parameterType="BoardVO">
+        insert into board(writer, title, content, pwd, hit, b_groups, b_step, b_lev,f_name)
+        values(#{writer}, #{title}, #{content}, #{pwd}, 0, #{b_groups}, #{b_step}, #{b_lev}
+        <choose>
+            <when test="f_name != null">, #{f_name}</when>
+            <otherwise>, ''</otherwise>
+        </choose>
+        )
+    </insert>
+
+<!--    삭제-->
+    <update id="getDelete" parameterType="BoardVO">
+        update board set  active = 1 where b_idx = #{b_idx}
+    </update>
+</mapper>

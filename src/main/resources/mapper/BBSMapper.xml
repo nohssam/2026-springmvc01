@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.study.myproject01.bbs.mapper.BBSMapper">
+<!--    전체 게시물의 수 -->
+    <select id="getCount" resultType="int">
+        select count(*) from bbs_t where active = 0
+    </select>
+<!-- 리스트-->
+      <select id="getBBSList" parameterType="map"  resultType="BBSVO">
+          select * from bbs_t
+          where active = 0 order by b_idx desc limit #{numPerPage} offset #{offset}
+      </select>
+<!--글쓰기-->
+      <insert id="getBBSInsert" parameterType="BBSVO">
+          insert into bbs_t (subject, writer, content, f_name, pwd, hit)
+          values (
+              #{subject},
+              #{writer},
+              #{content},
+              <choose>
+                  <when test="f_name != null">#{f_name}</when>
+                  <otherwise>''</otherwise>
+              </choose>,
+              #{pwd},
+              0
+          )
+      </insert>
+<!--  hit  업데이트 -->
+      <update id="getBBSHitUpdate" parameterType="BBSVO">
+          update bbs_t set hit = hit + 1 where b_idx = #{b_idx}
+      </update>
+<!--    상세보기-->
+      <select id="getBBSDetail" parameterType="BBSVO" resultType="BBSVO">
+          select * from bbs_t where  b_idx = #{b_idx}
+      </select>
+<!--    원글 삭제(실제는 update => active=1 )-->
+      <update id="deleteBBS" parameterType="BBSVO">
+          update bbs_t set active=1 where b_idx = #{b_idx}
+      </update>
+<!-- 원글 수정 -->
+    <update id="updateBBS" parameterType="BBSVO">
+        update bbs_t set writer=#{writer},subject=#{subject}, content=#{content}
+        <if test="f_name != null and f_name != ''">
+            , f_name = #{f_name}
+        </if>
+        where b_idx = #{b_idx}
+    </update>
+<!--    댓글 조회-->
+    <select id="getCommentList" parameterType="BBSVO" resultType="CommentVO">
+        select * from comment_t where b_idx = #{b_idx} and active = 0 order by c_idx asc
+    </select>
+<!--    댓글 삽입-->
+    <insert id="getCommentInsert" parameterType="CommentVO">
+        insert into comment_t(b_idx, writer, content,pwd, write_date)
+        values(#{b_idx}, #{writer}, #{content},#{pwd}, now())
+    </insert>
+<!--   댓글 검색(비번 검증을 위해서)-->
+    <select id="getCommentDetail" parameterType="CommentVO" resultType="CommentVO">
+        select * from comment_t where c_idx = #{c_idx}
+    </select>
+<!--    댓글 삭제(실제는 update => active=1 )-->
+    <update id="getCommentDelete" parameterType="CommentVO">
+        update comment_t set active = 1 where c_idx = #{c_idx}
+    </update>
+</mapper>
