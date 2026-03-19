@@ -17,6 +17,7 @@
  <p><button onclick="send_shop()">쇼핑몰</button><p>
  <p><button onclick="send_shop3()">쇼핑몰3</button><p>
  <p><button onclick="send_email()">이메일</button><p>
+ <p><button onclick="send_goole()">번역</button><p>
 <script>
     function send_go(){
         location.href=`${pageContext.request.contextPath}/guestbook/luck`;
