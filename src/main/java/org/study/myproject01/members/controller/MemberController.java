@@ -40,7 +40,7 @@ public class MemberController {
             if(passwordEncoder.matches(memberVO.getM_pw(), mvo.getM_pw())){
                 // 로그인 성공
                 session.setAttribute("logInChk","ok");
-                // 보안상 위험 하다.
+                // 보안상 위험 하다.(원래는 id나 name, 등 제일 최소만 담는다.)
                 session.setAttribute("mvo",mvo);
                 return "redirect:/shop/list";
             }else{

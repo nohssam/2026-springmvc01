@@ -68,8 +68,9 @@ img{
 		</tr>
 	</table>
 	<script type="text/javascript">
-       <%--	로그인이 되어있어야 한다.제대로 넘어간다.(로그인 Spring에서 한다.--%>
+       <%--	로그인이 되어있어야 한다.제대로 넘어간다.(로그인 Spring에서 한다.)--%>
 		function addCartGo() {
+			// 제품 정보를 담기 위해서 shop_idx를 가져가자
               location.href = "${pageContext.request.contextPath}/shop/addCart?shop_idx=${svo.shop_idx}";
 		}
 		function ShowCartGo() {

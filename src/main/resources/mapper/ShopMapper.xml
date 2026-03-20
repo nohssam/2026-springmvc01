@@ -10,4 +10,23 @@
     <select id="getShopDetail" parameterType="ShopVO" resultType="ShopVO">
         select * from shop_t where shop_idx = #{shop_idx}
     </select>
+    <select id="getCartList" parameterType="String" resultType="CartVO">
+        select * from cart where m_id = #{m_id}
+    </select>
+    <select id="getCartChk" parameterType="CartVO" resultType="int">
+        select count(*) from cart where m_id=#{m_id} and p_num=#{p_num}
+    </select>
+    <insert id="getCartInsert" parameterType="CartVO">
+        insert into cart(p_num,p_name,p_price,p_saleprice, p_su, m_id)
+        values(#{p_num},#{p_name},#{p_price},#{p_saleprice}, #{p_su}, #{m_id})
+    </insert>
+    <update id="getCartUpdate" parameterType="CartVO">
+        update cart set p_su = p_su + 1  where m_id=#{m_id} and p_num=#{p_num}
+    </update>
+    <update id="getCartEdit" parameterType="CartVO">
+        update cart set p_su =#{p_su} where m_id=#{m_id} and p_num=#{p_num}
+    </update>
+    <delete id="getCartDelete" parameterType="CartVO">
+        delete from cart where m_id=#{m_id} and p_num=#{p_num}
+    </delete>
 </mapper>

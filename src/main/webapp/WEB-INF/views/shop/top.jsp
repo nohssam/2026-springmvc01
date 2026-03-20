@@ -42,12 +42,19 @@
 					 로그인 성공하면 session에 logInChk 이름, ok 값 저장되어있다.--%>
 			    <c:choose>
 			       <c:when test="${logInChk == 'ok'}">
-				      ${mvo.m_name}님 환영합니다. |
+				      ${mvo.m_name}님 환영합니다.
+				      <c:if test="${mvo.m_id == 'admin'}">
+				      	<a href="${pageContext.request.contextPath}/shop/addForm">상품 등록 페이지</a>
+				      </c:if>    |
+				      <c:if test="${mvo.m_id != 'admin'}">
+				      	<a href="${pageContext.request.contextPath}/shop/showCart">장바구니</a>
+				      </c:if>    |
 				      <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
 				   </c:when>
 			       <c:otherwise>
                         <a href="${pageContext.request.contextPath}/member/loginForm">로그인 </a> |
-					    <a href="${pageContext.request.contextPath}/member/joinForm">회원가입 </a>
+					    <a href="${pageContext.request.contextPath}/member/joinForm">회원가입 </a> |
+					    <a href="${pageContext.request.contextPath}/shop/showCart">장바구니</a>
                    </c:otherwise>
 				</c:choose>
 		  </div>
