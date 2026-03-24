@@ -6,7 +6,7 @@
 <head>
     <meta charset=UTF-8>
     <title>Insert title here</title>
-    <style type="text/css">
+    <style>
         #bbs table {
             width:580px;
             margin:0 auto;

@@ -1,25 +1,39 @@
 package org.study.myproject01.shop.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.study.myproject01.members.vo.MemberVO;
 import org.study.myproject01.shop.service.ShopService;
 import org.study.myproject01.shop.vo.CartVO;
 import org.study.myproject01.shop.vo.ShopVO;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
+@Slf4j
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
     @Autowired
     private ShopService shopService;
+
+    // 이미지 업로드-1
+    @Value("${file.upload3.path}")
+    private String shopImagePath;
+    // 이미지 업로드-2
+    private String getShopImageFullPath(){
+        return System.getProperty("user.dir").replace("\\","/")+"/"+shopImagePath;
+    }
 
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "ele002") String category, Model model) {
@@ -95,5 +109,40 @@ public class ShopController {
     @GetMapping("/addForm")
     public String addForm() {
         return "shop/addForm";
+    }
+    @PostMapping("/addShop")
+    public String addShop(ShopVO shopVO,
+                          @RequestParam MultipartFile file_s,
+                          @RequestParam MultipartFile file_l,
+                          Model model) {
+        try{
+            String fullPath = getShopImageFullPath();
+            File dir = new File(fullPath);
+            // 디렉토리가 없으면 만들어 주세요
+            if(!dir.exists()){dir.mkdirs();}
+
+            // 소 이미지 저장
+            String uuid_s = UUID.randomUUID().toString();
+            String saveName_s = uuid_s+"_"+file_s.getOriginalFilename();
+            file_s.transferTo(new File(dir, saveName_s));
+
+            // 대 이미지 저장
+            String uuid_l = UUID.randomUUID().toString();
+            String saveName_l = uuid_l+"_"+file_s.getOriginalFilename();
+            file_l.transferTo(new File(dir, saveName_l));
+
+            // DB에 저장
+            shopVO.setP_image_s(saveName_s);
+            shopVO.setP_image_l(saveName_l);
+
+            shopService.addShop(shopVO);
+
+            return "redirect:/shop/list";
+
+        }catch (Exception e){
+            log.info("addShop error : {}", e.getMessage());
+            return "shop/addForm";
+        }
+
     }
 }

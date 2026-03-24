@@ -14,4 +14,5 @@ public interface ShopService {
     void getCartUpdate(String m_id, String p_num);
     void getCartEdit(CartVO cvo);
     void getCartDelete(CartVO cvo);
+    void addShop(ShopVO shopVO);
 }

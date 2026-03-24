@@ -15,6 +15,9 @@
  <p><button onclick="send_bbs()">게시판1(BBS)</button></p>
  <p><button onclick="send_board()">게시판2(Board)</button><p>
  <p><button onclick="send_shop()">쇼핑몰</button><p>
+ <p><button onclick="send_addr()">다음 주소록</button><p>
+ <p><button onclick="send_maps()">kakao map</button><p>
+ <p><button onclick="send_email()">email 검증</button><p>
 <script>
     function send_go(){
         location.href=`${pageContext.request.contextPath}/guestbook/luck`;
@@ -27,6 +30,15 @@
     }
     function send_shop() {
      location.href=`${pageContext.request.contextPath}/shop/list`;
+    }
+    function send_addr() {
+     location.href=`${pageContext.request.contextPath}/daum/addrForm`;
+    }
+    function send_maps() {
+     location.href=`${pageContext.request.contextPath}/daum/kakaomapindex`;
+    }
+    function send_email() {
+     location.href=`${pageContext.request.contextPath}/email/emailForm`;
     }
 </script>
 </body>

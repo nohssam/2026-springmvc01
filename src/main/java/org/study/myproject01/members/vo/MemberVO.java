@@ -15,6 +15,7 @@ public class MemberVO {
     m_pw ,
     m_name,
     m_addr ,
+    m_addr2 ,
     m_email ,
     m_phone ,
     m_reg ,

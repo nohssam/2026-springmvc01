@@ -72,7 +72,7 @@
 						<input type="submit" value="로그인">
 						<input type="reset" value="취소">
 					</div>
-					<div> 회원 가입 하시겠습니까? <span><a href="/membersJoinForm">회원가입</a></span>
+					<div> 회원 가입 하시겠습니까? <span><a href="${pageContext.request.contextPath}/member/joinForm">회원가입</a></span>
 					</div>
 				</fieldset>
 			</form>

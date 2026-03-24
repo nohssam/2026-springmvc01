@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+<style>
 	#container{
 		width: 500px;
 		margin: 0 auto;   /* 중앙위치 */
@@ -56,11 +56,12 @@
 	<div id="container">
 		<h2>회원가입</h2>
 		<div id="login" style="margin: 30px;">
-			<form action="/members_join_ok" method="post" autocomplete="off" onsubmit="return checkForm();">
+			<%--onsubmit="return checkForm();"  => submit 하기 전에 	checkForm() 실행 해서 true가 나와 야지 submit 실행	--%>
+			<form action="${pageContext.request.contextPath}/member/joinok" method="post" autocomplete="off" onsubmit="return checkForm();">
 				<fieldset>
 					<legend>가입정보</legend>
 					<ul>
-					<!-- 아이디 중복검사 필수 (ajax) -->
+					     <!-- 아이디 중복검사 필수 (ajax) -->
 						<li><label for="m_id">아이디 : </label>
 						    <input type="text" id="m_id" name="m_id" required>
 						</li>   
@@ -103,85 +104,97 @@
 			</form>
 		</div>
 	</div>
-	
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script type="text/javascript">
-		function checkForm() {
-			const pw = $("#m_pw").val();
-			const pw2 = $("#m_pw2").val();
-			if(pw === pw2){
-				return true;
-			}else{
-				alert("비밀번호가 일치하지 않습니다.");
-				// $("#m_pw").val("");
-				$("#m_pw2").val("").focus();
-				return false;
-			}
-		}
-		
-		function execDaumPostcode() {
-			new daum.Postcode({
-				oncomplete: function(data) {
-					$("#m_addr").val(data.address);
-				}
-			}).open();
-		}
-		
-		function sendVerificationCode() {
-			$.ajax({
-				url: "/sendCode",
-				method: "post",
-				data: {"email": $("#m_email").val()},
-				dataType: "text",
-				success : function(data) {
-					if(data === "success"){
-						alert("인증코드가 전송되었습니다.");
-					}else{
-						alert("전송실패");
-					}
-				},
-				error: function() {
-					alert("읽기실패");
-				}
-			});
-		}
-		
-		function checkVerificationCode() {
-			let emailCode = $("#emailCode").val().trim();
-			if(emailCode === ""){
-				alert("인증코드를 입력하세요");
-				$("#emailCode").focus();
-				return;
-			}
-			$.ajax({
-				url: "/verifyCode",
-				type: "post",
-				data: {"code": emailCode},
-				dataType: "text",
-				success : function(data) {
-					let msg = {
-						match : "인증성공",
-						mismatch : "코드 불일치",
-						expired: "인증 시간 초과"
-					};
-					$("#result").html(msg[data] || "오류");
-					if(data === "match"){
-						$("#m_phone").prop("disabled", false);
-						$("#submitBtn").prop("disabled", false);
-						$("#result").css("color","green");
-					}else{
-						$("#m_phone").prop("disabled", true);
-						$("#submitBtn").prop("disabled", true);
-						$("#result").css("color","red");
-					}
-				},
-				error: function() {
-					alert("읽기실패");
-				}
-			});
-		}
-		
+    <%-- ajax--%>
+	<script src="https://code.jquery.com/jquery-4.0.0.js"></script>
+    <%-- kakao 주소록   --%>
+	<script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+		 function checkForm() {
+			 const pw = $("#m_pw").val().trim();
+			 const pw2 = $("#m_pw2").val().trim();
+			 if(pw === pw2){
+				 return true;
+			 }else{
+				 alert("비밀번호가 일치하지 않습니다");
+				 // $("#m_pw").val("").focus();
+				 // $("#m_pw2").val("");
+
+				 $("#m_pw2").val("").focus();
+				 return false;
+			 }
+		 }
+		 function execDaumPostcode() {
+			 new kakao.Postcode({
+				 oncomplete: function(data) {
+					 $("#m_addr").val(data.roadAddress);
+					 // 상세주소는 직접 입력
+				 }
+			 }).open();
+		 }
+
+         function sendVerificationCode() {
+			 const email = $("#m_email").val().trim();
+			 // 만들때 (정규식 공부하기 )
+			 // if(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email)){
+				//  alert("이메일 형식이 올바르지 않습니다.")
+				//  return false;
+			 // }
+			 if(!/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email)){
+				 alert("이메일 형식이 올바르지 않습니다.");
+				 return;
+			 }
+			 $.ajax({
+				 url: "${pageContext.request.contextPath}/sendCode",
+				 method: "POST",
+				 data: {"email": email},
+				 dataType: "text",
+				 success: function(data){
+					 if(data == "success"){
+						 alert("인증코드 전송");
+					 }else{
+						 alert("전송 실패");
+					 }
+				 },
+				 error: function() {
+					 alert("읽기 실패");
+				 }
+			 });
+		 }
+		 function checkVerificationCode() {
+			 const code = $("#emailCode").val().trim();
+			 if(code === ""){
+				 alert("인증코드 입력하세요");
+				 $("#emailCode").focus();
+				 return;
+			 }
+			 $.ajax({
+				 url: "${pageContext.request.contextPath}/verifyCode",
+				 method: "POST",
+				 data: {"code": code},
+				 dataType: "text",
+				 success: function(data){
+					 let msg = {
+						 match : "인증성공",
+						 mismatch : "코드불일치",
+						 expired: "인증 시간 초과"
+					 };
+					 $("#result").html(msg[data] || "오류");
+		             if(data === "match"){
+						 $("#m_phone").prop("disabled", false);
+						 $("#submitBtn").prop("disabled", false);
+						 $("#result").css("color", "green");
+					 }else{
+						 $("#m_phone").prop("disabled", true);
+						 $("#submitBtn").prop("disabled", true);
+						 $("#result").css("color", "red");
+					 }
+
+				 },
+				 error: function() {
+					 alert("인증실패");
+				 }
+			 });
+		 }
 	</script>
 </body>
 </html>

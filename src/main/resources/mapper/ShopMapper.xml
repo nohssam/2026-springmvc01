@@ -29,4 +29,8 @@
     <delete id="getCartDelete" parameterType="CartVO">
         delete from cart where m_id=#{m_id} and p_num=#{p_num}
     </delete>
+    <insert id="addShop" parameterType="ShopVO">
+        insert into shop_t(category, p_num, p_name, p_company, p_price, p_saleprice,p_image_s, p_image_l, p_content, p_date, p_active)
+        values(#{category}, #{p_num}, #{p_name}, #{p_company}, #{p_price}, #{p_saleprice},#{p_image_s}, #{p_image_l}, #{p_content}, now(), 0)
+    </insert>
 </mapper>

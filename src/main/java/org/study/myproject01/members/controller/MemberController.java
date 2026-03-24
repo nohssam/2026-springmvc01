@@ -59,4 +59,8 @@ public class MemberController {
         session.invalidate();
         return "redirect:/shop/list";
     }
+    @GetMapping("/joinForm")
+    public String joinForm() {
+        return "members/joinForm";
+    }
 }

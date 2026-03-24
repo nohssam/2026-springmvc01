@@ -31,15 +31,15 @@ img{
 <body>
 <jsp:include page="top.jsp" />
 	<hr>
-   <form method="post" enctype="multipart/form-data">
+   <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/shop/addShop">
 	<table>
 		<tbody>
 		<tr>
 			<td style="width: 25%">제품 Category</td>
 			<td style="width: 75%" class="content">
 				<label> <input type="radio" name="category" value="com001" checked > 컴퓨터 </label>
-				<label> <input type="radio" name="category" value="ele002"  > 컴퓨터 </label>
-				<label> <input type="radio" name="category" value="sp003"  > 컴퓨터 </label>
+				<label> <input type="radio" name="category" value="ele002"  > 가전 제품 </label>
+				<label> <input type="radio" name="category" value="sp003"  > 스포츠 </label>
 			</td>
 		</tr>
 		<tr>
