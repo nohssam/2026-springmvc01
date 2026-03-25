@@ -6,4 +6,5 @@ import org.study.myproject01.members.vo.MemberVO;
 @Mapper
 public interface MemberMapper {
     MemberVO getMemberDetail(MemberVO memberVO);
+    int getMembersJoinOK(MemberVO memberVO);
 }

@@ -63,4 +63,20 @@ public class MemberController {
     public String joinForm() {
         return "members/joinForm";
     }
+
+    @PostMapping("/joinok")
+    public String joinOk(MemberVO memberVO) {
+        try{
+            // password  암호화
+            memberVO.setM_pw(passwordEncoder.encode(memberVO.getM_pw()));
+            int result = memberService.getMembersJoinOK(memberVO);
+            if(result>0){
+                return "redirect:/member/loginForm";
+            }else{
+                return  "members/joinForm";
+            }
+        } catch (Exception e) {
+            return  "members/joinForm";
+        }
+    }
 }

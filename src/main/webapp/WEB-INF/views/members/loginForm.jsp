@@ -78,7 +78,9 @@
 			</form>
 			<div id="sns_login">
 			<p>SNS 계정으로 로그인</p>
+			<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=731257f60bb42c7add0730740e688679&redirect_uri=http://localhost:8080/myproject01/kakaologin">
 				<img style="width: 150px" src='<c:url value="/resources/images/kakao_login_large_narrow.png" />'>
+			</a>
 				<img width="160px;" src='<c:url value="/resources/images/btnG_logIn.png" />'>
 			</div>
 		</div>

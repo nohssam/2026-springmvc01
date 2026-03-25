@@ -14,4 +14,9 @@ public class MemberServiceImpl implements MemberService {
     public MemberVO getMemberDetail(MemberVO memberVO) {
         return memberMapper.getMemberDetail(memberVO);
     }
+
+    @Override
+    public int getMembersJoinOK(MemberVO memberVO) {
+        return memberMapper.getMembersJoinOK(memberVO);
+    }
 }

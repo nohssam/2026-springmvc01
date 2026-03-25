@@ -4,4 +4,5 @@ import org.study.myproject01.members.vo.MemberVO;
 
 public interface MemberService {
     MemberVO getMemberDetail(MemberVO memberVO);
+    int getMembersJoinOK(MemberVO memberVO);
 }
