@@ -19,4 +19,19 @@ public class MemberServiceImpl implements MemberService {
     public int getMembersJoinOK(MemberVO memberVO) {
         return memberMapper.getMembersJoinOK(memberVO);
     }
+
+    @Override
+    public MemberVO findByPhoneNumber(String phone) {
+        return memberMapper.findByPhoneNumber(phone);
+    }
+
+    @Override
+    public void updateKakaoInfo(MemberVO memberVO) {
+        memberMapper.updateKakaoInfo(memberVO);
+    }
+
+    @Override
+    public void getMembersSnsJoinOK(MemberVO mvo) {
+        memberMapper.getMembersSnsJoinOK(mvo);
+    }
 }

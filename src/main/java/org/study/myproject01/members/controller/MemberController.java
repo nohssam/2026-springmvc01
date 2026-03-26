@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.study.myproject01.members.service.MemberService;
 import org.study.myproject01.members.vo.MemberVO;
+import org.study.myproject01.sns.service.KakaoLogoutUtil;
+import org.study.myproject01.sns.service.NaverLogoutUtil;
 
 @Slf4j
 @Controller
@@ -52,11 +54,32 @@ public class MemberController {
     }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
+
         // 하나씩 삭제 할때
         // session.removeAttribute("logInChk");
 
         // 세션 초기화
-        session.invalidate();
+        // session.invalidate();
+
+        // session 정보를 가지고 vo을 가져오자
+        MemberVO mvo = (MemberVO) session.getAttribute("mvo");
+        if(mvo != null){
+            if("kakao".equals(mvo.getSns_provider())){
+                // 토근 만료
+                String accesToken = (String) session.getAttribute("kakaoAccessToken");
+                KakaoLogoutUtil.logoutByAccessToken(accesToken);
+
+            }else if("naver".equals(mvo.getSns_provider())){
+                // 토큰 만료
+                String accesToken = (String) session.getAttribute("naverAccessToken");
+                NaverLogoutUtil.logoutByAccessToken(accesToken);
+            }else{
+                // 세션 초기화
+                session.invalidate();
+            }
+        }
+         // 세션 초기화
+         session.invalidate();
         return "redirect:/shop/list";
     }
     @GetMapping("/joinForm")

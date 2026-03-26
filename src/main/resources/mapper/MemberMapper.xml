@@ -11,4 +11,44 @@
         insert into members(m_id, m_pw, m_name, m_addr, m_addr2, m_email, m_phone)
         values(#{m_id}, #{m_pw}, #{m_name}, #{m_addr}, #{m_addr2}, #{m_email}, #{m_phone})
     </insert>
+    <select id="findByPhoneNumber" parameterType="String" resultType="MemberVO">
+        select * from members where m_phone = #{phone}
+    </select>
+<!--    SNS: 기존 회원 SNS 정보 업데이트-->
+    <update id="updateKakaoInfo" parameterType="MemberVO">
+        update members
+         set sns_provider=#{sns_provider},
+        <choose>
+            <when test="sns_provider == 'kakao'">
+                sns_email_kakao = #{sns_email_kakao}
+            </when>
+            <when test="sns_provider == 'naver'">
+                sns_email_naver = #{sns_email_naver}
+            </when>
+        </choose>
+         where m_idx = #{m_idx}
+    </update>
+<!--    SNS신규 가입자 -->
+    <insert id="getMembersSnsJoinOK" parameterType="MemberVO">
+        insert into members(m_id, m_name, m_phone, m_email, sns_provider,
+        <choose>
+            <when test="sns_provider == 'kakao'">
+                sns_email_kakao
+            </when>
+            <when test="sns_provider == 'naver'">
+                sns_email_naver
+            </when>
+        </choose>
+
+        ) values(#{m_id}, #{m_name}, #{m_phone}, #{m_email}, #{sns_provider},
+        <choose>
+            <when test="sns_provider == 'kakao'">
+                #{sns_email_kakao}
+            </when>
+            <when test="sns_provider == 'naver'">
+                #{sns_email_naver}
+            </when>
+        </choose>
+        )
+    </insert>
 </mapper>

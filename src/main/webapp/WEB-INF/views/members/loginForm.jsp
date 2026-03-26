@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+<style>
 	#container{
 		width: 500px;
 		margin: 100px auto;   /* 중앙위치 */
@@ -81,7 +81,9 @@
 			<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=731257f60bb42c7add0730740e688679&redirect_uri=http://localhost:8080/myproject01/kakaologin">
 				<img style="width: 150px" src='<c:url value="/resources/images/kakao_login_large_narrow.png" />'>
 			</a>
+			<a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=jt_OkWhi_woj_DEH_d4d&state=STATE_STRING&redirect_uri=http://localhost:8080/myproject01/naverlogin">
 				<img width="160px;" src='<c:url value="/resources/images/btnG_logIn.png" />'>
+			</a>
 			</div>
 		</div>
 	</div>	

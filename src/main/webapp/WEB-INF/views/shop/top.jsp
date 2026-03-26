@@ -34,7 +34,7 @@
 	  <div id="nav">
 		  <a href="${pageContext.request.contextPath}/shop/list?category=com001">컴퓨터</a> |
 		  <a href="${pageContext.request.contextPath}/shop/list?category=ele002">가전 제품</a> |
-		  <a href="${pageContext.request.contextPath}/shop/list?category=sp003">스포츠</a>
+		  <a href="${pageContext.request.contextPath}/shop/list?category=sp003">스포츠</a> |
 		  <div id="log">
 			<%--	로그인 여부 따라 보이는 부분이 달라진다.
 					 로그인 여부 정보 session에 담는다.
@@ -42,14 +42,14 @@
 					 로그인 성공하면 session에 logInChk 이름, ok 값 저장되어있다.--%>
 			    <c:choose>
 			       <c:when test="${logInChk == 'ok'}">
-				      ${mvo.m_name}님 환영합니다.
+				      ${mvo.m_name}님 환영합니다. |
 				      <c:if test="${mvo.m_id == 'admin'}">
-				      	<a href="${pageContext.request.contextPath}/shop/addForm">상품 등록 페이지</a>
-				      </c:if>    |
+				      	<a href="${pageContext.request.contextPath}/shop/addForm">상품 등록 페이지</a> |
+				      </c:if>
 				      <c:if test="${mvo.m_id != 'admin'}">
-				      	<a href="${pageContext.request.contextPath}/shop/showCart">장바구니</a>
-				      </c:if>    |
-				      <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+				      	<a href="${pageContext.request.contextPath}/shop/showCart">장바구니</a> |
+				      </c:if>
+				      <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a> |
 				   </c:when>
 			       <c:otherwise>
                         <a href="${pageContext.request.contextPath}/member/loginForm">로그인 </a> |
