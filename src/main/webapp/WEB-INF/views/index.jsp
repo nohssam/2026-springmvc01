@@ -17,7 +17,7 @@
  <p><button onclick="send_shop()">쇼핑몰</button><p>
  <p><button onclick="send_addr()">다음 주소록</button><p>
  <p><button onclick="send_maps()">kakao map</button><p>
- <p><button onclick="send_email()">email 검증</button><p>
+ <p><button onclick="send_weather()">기상청 단기 예보(공공데이터)</button><p>
 <script>
     function send_go(){
         location.href=`${pageContext.request.contextPath}/guestbook/luck`;
@@ -39,6 +39,9 @@
     }
     function send_email() {
      location.href=`${pageContext.request.contextPath}/email/emailForm`;
+    }
+    function send_weather() {
+     location.href=`${pageContext.request.contextPath}/weather`;
     }
 </script>
 </body>

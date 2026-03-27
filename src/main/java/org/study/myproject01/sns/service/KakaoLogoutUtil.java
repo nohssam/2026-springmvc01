@@ -17,6 +17,10 @@ public class KakaoLogoutUtil {
            connection.setDoOutput(true);
            connection.setRequestProperty("Authorization",  "Bearer " + accessToken);
 
+           // Authorization: Bearer  방식으로 보내기 때문에 body에 아무것도 쓸 필요가 없다.
+           int responseCode = connection.getResponseCode();
+           log.info("KakaoLogout response code: {} " , responseCode);
+           connection.disconnect();
        }catch(Exception e){
            log.info(e.getMessage());
        }

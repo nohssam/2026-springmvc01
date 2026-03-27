@@ -63,12 +63,13 @@ public class GuestBookController {
     // spring.mvc.view.prefix=/WEB-INF/views   (접두어)
     // spring.mvc.view.suffix=.jsp             (접미어)
 
-    // @GetMapping("/") =>  첫페이지 => homepage
-    @GetMapping("/")
-    public String getBye(){
-        // /WEB-INF/views/index.jsp
-        return "index";
-    }
+//    // @GetMapping("/") =>  첫페이지 => homepage
+//    // 원래 /guestbook/ 가 들어와야 실행 되는데
+//    @GetMapping("/")
+//    public String getBye(){
+//        // /WEB-INF/views/index.jsp
+//        return "index";
+//    }
 
     @GetMapping("/list")
     public ModelAndView list(){

@@ -57,7 +57,6 @@ public class MemberController {
 
         // 하나씩 삭제 할때
         // session.removeAttribute("logInChk");
-
         // 세션 초기화
         // session.invalidate();
 
@@ -65,17 +64,14 @@ public class MemberController {
         MemberVO mvo = (MemberVO) session.getAttribute("mvo");
         if(mvo != null){
             if("kakao".equals(mvo.getSns_provider())){
-                // 토근 만료
+                // 토큰 만료 방식 => 로그인 할때 session에 저장한 accessToken을 호출
                 String accesToken = (String) session.getAttribute("kakaoAccessToken");
                 KakaoLogoutUtil.logoutByAccessToken(accesToken);
 
             }else if("naver".equals(mvo.getSns_provider())){
-                // 토큰 만료
+                // 토큰 만료 => 로그인 할때 session에 저장한 accessToken을 호출
                 String accesToken = (String) session.getAttribute("naverAccessToken");
                 NaverLogoutUtil.logoutByAccessToken(accesToken);
-            }else{
-                // 세션 초기화
-                session.invalidate();
             }
         }
          // 세션 초기화
