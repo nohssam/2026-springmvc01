@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WeatherFcstVO {
   // JSP에서 쓰기 좋게 가동한 것 (날짜/시간별 묶음)
-    private String fcstData;  // 예보일자
+    private String fcstDate;  // 예보일자
     private String fcstTime;  // 예보시각
     private String tmp;       // 온도
     private String sky;       // 하늘상태    맑음(1), 구름많음(3), 흐림(4)

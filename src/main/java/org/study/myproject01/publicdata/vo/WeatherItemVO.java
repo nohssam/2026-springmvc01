@@ -13,7 +13,7 @@ public class WeatherItemVO {
     private String baseDate ;  // 발표일자
     private String baseTime ;  // 발표시간
     private String category ;  // 자료구분(TMP, SKY, PTY....)
-    private String fcstData ;  // 예보일자
+    private String fcstDate ;  // 예보일자
     private String fcstTime ;  // 예보시각
     private String fcstValue ; // 예보값
     private int nx ;           // 예보지점 X 좌표

@@ -72,8 +72,12 @@ public class WebConfig implements WebMvcConfigurer {
                        "/shop/detail",    // shop 상세보기
                        "/bbs/**",          // bbs 는 모두 풀어줌
                        "/weather",
-                       "/weatherFcst"
-
+                       "/weatherFcst",
+                        "/weatherJsonForm",
+                        "/weatherXmlForm",
+                        "/weatherJson",
+                        "/weatherXml",
+                        "/culturalEventInfo"
         );
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")              // 모든 경로에 적용
