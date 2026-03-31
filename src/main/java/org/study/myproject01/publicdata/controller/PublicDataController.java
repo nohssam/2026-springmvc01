@@ -13,4 +13,7 @@ public class PublicDataController {
 
     @GetMapping("/weatherXmlForm")
     public String weatherXmlForm(){ return "publicdata/weatherXmlForm";}
+
+    @GetMapping("/culturalEventInfo")
+    public String culturalEventInfo(){ return "publicdata/culturalForm";}
 }

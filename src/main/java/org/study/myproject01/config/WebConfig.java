@@ -77,7 +77,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/weatherXmlForm",
                         "/weatherJson",
                         "/weatherXml",
-                        "/culturalEventInfo"
+                        "/culturalEventInfo",
+                        "/cultural",
+                         "/KorRes"
         );
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")              // 모든 경로에 적용

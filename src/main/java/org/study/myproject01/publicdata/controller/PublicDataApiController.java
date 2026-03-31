@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.study.myproject01.publicdata.service.SeoulService;
 import org.study.myproject01.publicdata.service.WeatherService;
+import org.study.myproject01.publicdata.vo.CulturalVO;
+import org.study.myproject01.publicdata.vo.KorResVO;
 import org.study.myproject01.publicdata.vo.WeatherFcstVO;
 import org.study.myproject01.publicdata.vo.WeatherItemVO;
 
@@ -26,6 +29,9 @@ public class PublicDataApiController {
     @Autowired
     private WeatherService weatherService;
 
+    @Autowired
+    private SeoulService seoulService;
+
 //    기상청 단기 예보
 //    @GetMapping("/weatherFcst")
 //    public List<WeatherItemVO> getWeatherData(
@@ -42,7 +48,7 @@ public class PublicDataApiController {
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("20", "UTF-8")); /*한 페이지 결과 수*/
         urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
-        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode("20260329", "UTF-8")); /*‘21년 6월 28일 발표*/
+        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode("20260330", "UTF-8")); /*‘21년 6월 28일 발표*/
         urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0800", "UTF-8")); /*06시 발표(정시단위) */
         urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode("60", "UTF-8")); /*예보지점의 X 좌표값*/
         urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode("127", "UTF-8")); /*예보지점의 Y 좌표값*/
@@ -76,7 +82,9 @@ public class PublicDataApiController {
     public List<WeatherFcstVO> weatherJSON(
      @RequestParam(defaultValue = "60")  int nx,
      @RequestParam(defaultValue = "127")  int ny ) {
-        log.info("ajax 들어오나요");
+        log.info("JSON");
+        log.info("nx : {}", nx);
+        log.info("ny : {}", ny);
         return weatherService.getWeatherFcstJson(nx, ny);
     }
 
@@ -84,7 +92,20 @@ public class PublicDataApiController {
     public List<WeatherFcstVO> weatherXml(
             @RequestParam(defaultValue = "60")  int nx,
             @RequestParam(defaultValue = "127")  int ny ) {
+        log.info("XML");
+        log.info("nx : {}", nx);
+        log.info("ny : {}", ny);
         return weatherService.getWeatherFcstXml(nx, ny);
+    }
+
+    @GetMapping("/cultural")
+    public List<CulturalVO.Row> getCultural(){
+         return  seoulService.getCultural();
+    }
+
+    @GetMapping("/KorRes")
+    public List<KorResVO> getKorRes(){
+        return seoulService.getKorRes();
     }
 
 }

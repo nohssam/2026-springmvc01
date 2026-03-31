@@ -11,8 +11,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.study.myproject01.publicdata.vo.WeatherFcstVO;
 import org.study.myproject01.publicdata.vo.WeatherItemVO;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -172,7 +177,6 @@ public class WeatherServiceImpl implements WeatherService {
                     case "PCP" : vo.setPcp(item.getFcstValue()); ; break;
                     case "REH" : vo.setReh(item.getFcstValue()); ; break;
                     case "WSD" : vo.setWsd(item.getFcstValue()); ; break;
-
                 }
             }
             // map.values()를 List로 변환
@@ -187,13 +191,63 @@ public class WeatherServiceImpl implements WeatherService {
     // XML 파싱
     private List<WeatherFcstVO> parseWeatherDataXml(String xml){
         if(xml == null) return new ArrayList<>();
-
-
         try{
+            // 1. XML 문자열 -> 바이트배열 -> InputStream -> DOM Document 객체
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+            // 2. DOM 트리 정규화 : 분산된 텍스트 노드를 합쳐  getTextContent() 가 정확하게 동작하게 함
+            doc.getDocumentElement().normalize();
+            // 3. xml 소스를 보고 반복되는 item을 찾자
+            NodeList itemNodes = doc.getElementsByTagName("item");
+            // 4. 날짜와 시각을 키로 WeatherFcstVO를 값으로 하는 순서 보존 Map
+            Map<String, WeatherFcstVO> map = new LinkedHashMap<>();
+            for (int i = 0; i < itemNodes.getLength(); i++) {
+                // item 하나
+                Element el = (Element) itemNodes.item(i);
 
+                // item 안에 있는 태그 에서 값 추출
+                String category = getXmlText(el, "category") ;
+                String fcstDate = getXmlText(el, "fcstDate") ;
+                String fcstTime = getXmlText(el, "fcstTime") ;
+                String fcstValue = getXmlText(el, "fcstValue") ;
+
+                // JSON  방식과 동일하게 그룹화 키 사용
+                String key = fcstDate + fcstTime;
+                map.computeIfAbsent(key, k->{
+                    WeatherFcstVO vo = new WeatherFcstVO();
+                    vo.setFcstDate(fcstDate);
+                    vo.setFcstTime(fcstTime);
+                    return vo;
+                });
+
+                WeatherFcstVO vo = map.get(key);
+                switch (category) {
+                    case "TMP" : vo.setTmp(fcstValue); ; break;
+                    case "SKY" : vo.setSky(fcstValue); ; break;
+                    case "PTY" : vo.setPty(fcstValue); ; break;
+                    case "POP" : vo.setPop(fcstValue); ; break;
+                    case "PCP" : vo.setPcp(fcstValue); ; break;
+                    case "REH" : vo.setReh(fcstValue); ; break;
+                    case "WSD" : vo.setWsd(fcstValue); ; break;
+                }
+
+            }
+            // map.values()를 List로 변환
+            return new ArrayList<>(map.values());
         }catch (Exception e){
-
+            log.info(e.getMessage());
+            return null;
         }
-        return null;
+    }
+
+    private String getXmlText(Element el, String tagName){
+       NodeList nl =  el.getElementsByTagName(tagName);
+       if(nl.getLength() == 0){
+           return "";
+       }else{
+           // 태그 사이에 글자 추출 ;
+         return nl.item(0).getTextContent().trim();
+       }
     }
 }

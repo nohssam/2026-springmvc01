@@ -5,7 +5,10 @@
     <style>
         #container{width:100%; margin: 0 auto; text-align: center;}
         #city-buttons {margin: 15px 0;}
-     </style>
+        table { margin: 0 auto; border-collapse: collapse; }
+        th, td { border: 1px solid #999; padding: 6px 12px; text-align: center;}
+        thead tr { background-color: #f0f0f0; }
+</style>
 </head>
 <body>
 
@@ -23,11 +26,11 @@
   <script>
       // 하늘상태    맑음(1), 구름많음(3), 흐림(4)
       function getSky(code){
-          return {'1' : '맑음','3' : '구름많음','4' : '흐림' }
+          return {'1' : '맑음','3' : '구름많음','4' : '흐림' }[code] || '-'
       }
       // pty;       // 강수 형태   없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4)
       function getPty(code) {
-          return {'0' : '-', '1' : '비', '2' : '비/눈', '3' : '눈', '4' : '소나기'}
+          return {'0' : '-', '1' : '비', '2' : '비/눈', '3' : '눈', '4' : '소나기'}[code] || '-'
       }
       // 날짜 수정 ("20260329")
       function formatDate(d){
@@ -86,8 +89,13 @@
       }
 
       $(document).ready(function(){
+          // 서울, 부산 버튼을 클릭했을 때
+          $('button[data-nx]').on('click', function(){
+              loadWeather($(this).data('nx'), $(this).data('ny'));
+          });
           // 페이지 시작하자 마자 실행하자
           loadWeather(60,127);
+
       });
   </script>
 </body>
