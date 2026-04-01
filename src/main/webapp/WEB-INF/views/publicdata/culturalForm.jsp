@@ -71,7 +71,31 @@
             // data : "",    // 서버에 갈때 가지고가는 파라미터 값
             dataType: "json",    // 서버에서 값을 가지고 올때 데이터의 자료형
             success: function (data) {
-                console.log(data);
+                // console.log(data);
+              if(!data || data.length == 0) {
+                $("#result").html("<p>데이터가 없습니다.</p>");
+              }
+              let table = "<table>";
+              table += "<thead><tr>";
+              table += "<th>대분류</th><th>중분류</th><th>소분류</th>"
+              table += "<th>상호명</th><th>한국어명</th><th>시/도</th><th>구</th><th>동</th>"
+              table += "</tr></thead>";
+              table += "<tbody>";
+              $.each(data, function (i, vo) {
+                table += "<tr>";
+                table += "<td>" +(vo.CATE1_NAME || "-")+"</td>";
+                table += "<td>" +(vo.CATE2_NAME || "-")+"</td>";
+                table += "<td>" +(vo.CATE3_NAME || "-")+"</td>";
+                table += "<td>" +(vo.NM_DP || "-")+"</td>";
+                table += "<td>" +(vo.NAME_KOR || "-")+"</td>";
+                table += "<td>" +(vo.H_KOR_CITY || "-")+"</td>";
+                table += "<td>" +(vo.H_KOR_GU || "-")+"</td>";
+                table += "<td>" +(vo.H_KOR_DONG || "-")+"</td>";
+                table += "<tr>";
+              });
+              table += "</tbody></table>";
+              $("#result").html("<p>총 <strong>" + data.length + "</strong>건</p>" + table);
+
             },
             error: function () {
               $("#result").html("<p style='color:red'>한국 음식점 로드 실패</p>");

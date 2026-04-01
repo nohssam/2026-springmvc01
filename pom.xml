@@ -112,6 +112,14 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- OkHttp3 -> Java/Android에서 HTTP 통신을 쉽게 해주는 라이브러리    -->
+        <!-- chatGPT, Google 번역 API   -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

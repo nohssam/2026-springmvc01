@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.study.myproject01.gpt.mapper.ChatAMapper">
+    <!-- user_id가 같은 것만 30개, 시간 오름 차순 정렬   -->
+    <select id="getChatList" parameterType="ChatVO" resultType="ChatVO">
+        select * from chat_messages
+        where user_id  = #{user_id}
+        and conversation_id = #{conversation_id}
+        order by created_at asc, chat_idx asc
+        limit 30
+    </select>
+</mapper>

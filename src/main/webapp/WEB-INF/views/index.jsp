@@ -21,6 +21,8 @@
  <p><button onclick="send_weather_json()">기상청 단기 예보(공공데이터) - JSON </button><p>
  <p><button onclick="send_weather_xml()">기상청 단기 예보(공공데이터) - XML </button><p>
  <p><button onclick="send_cultural()">서울시 문화 행사 / 한국 음식점(서울 포털)</button><p>
+ <p><button onclick="send_translate()">구글번역</button><p>
+ <p><button onclick="send_gpt()">chatGPTAPI</button><p>
 <script>
     function send_go(){
         location.href=`${pageContext.request.contextPath}/guestbook/luck`;
@@ -54,6 +56,12 @@
     }
     function send_cultural() {
      location.href=`${pageContext.request.contextPath}/culturalEventInfo`;
+    }
+    function send_translate() {
+     location.href=`${pageContext.request.contextPath}/translate`;
+    }
+    function send_gpt() {
+     location.href=`${pageContext.request.contextPath}/chatGPT`;
     }
 </script>
 </body>
