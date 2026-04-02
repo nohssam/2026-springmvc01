@@ -12,4 +12,11 @@
         order by created_at asc, chat_idx asc
         limit 30
     </select>
+
+<!--  사용자 질문 저장 // ChatGPT 대답 저장
+(삭제 가능 => Mapper, Service, ServiceImpl 삭제)-->
+    <insert id="getChatInsert" parameterType="ChatVO">
+        insert into chat_messages(user_id,conversation_id,role,content)
+        values(#{user_id},#{conversation_id},#{role},#{content})
+    </insert>
 </mapper>

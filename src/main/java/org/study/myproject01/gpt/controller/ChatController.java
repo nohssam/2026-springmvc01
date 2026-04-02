@@ -36,7 +36,7 @@ public class ChatController {
        chatVO.setUser_id(mvo.getM_id());
        chatVO.setRole("user");
 
-       chatService.sendUserMessage(chatVO);
+       chatService.getChatInsert(chatVO);
 
        return "redirect:/chatGPT";
    }

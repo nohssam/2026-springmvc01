@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface ChatAMapper {
     List<ChatVO> getChatList(ChatVO chatVO);
-    int sendUserMessage(ChatVO chatVO);
+    void getChatInsert(ChatVO chatVO);
 }

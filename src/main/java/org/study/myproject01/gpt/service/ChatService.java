@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ChatService {
     List<ChatVO> getChatList(String user_id);
-    int sendUserMessage(ChatVO chatVO);
+    void getChatInsert(ChatVO chatVO);
 }
